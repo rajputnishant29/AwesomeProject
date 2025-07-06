@@ -5,7 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  ActivityIndicator,
+  Image,
 } from 'react-native';
 import { loginUser } from '../api/api';
 
@@ -16,62 +17,90 @@ const LoginScreen = ({ navigation }) => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState({ visible: false, message: '' });
+
+  const showToast = (message) => {
+    setToast({ visible: true, message });
+  };
 
   const handleChange = (key, value) => {
     setForm({ ...form, [key]: value });
   };
 
-const handleLogin = async () => {
-  const { email, password } = form;
+  const handleLogin = async () => {
+    const { email, password } = form;
 
-  if (!email || !password) {
-    Alert.alert('Error', 'Please fill in all fields');
-    return;
-  }
+    if (!email || !password) {
+      showToast('Please fill in all fields');
+      return;
+    }
 
-  try {
-    const userData = await loginUser(email, password);
-    Alert.alert('Success', 'Logged in successfully!');
-    console.log('User Data:', userData); 
-    navigation.navigate('MainTabs');
-  } catch (error) {
-    console.log('🔴 Login screen error:', error.message);
-  Alert.alert('Login Failed', error.message || 'Something went wrong');
-  }
-};
+    try {
+      setLoading(true);
+      const userData = await loginUser(email, password);
+      showToast('Logged in successfully!');
+      console.log('User Data:', userData);
+      navigation.navigate('MainTabs');
+    } catch (error) {
+      console.log('🔴 Login screen error:', error.message);
+      showToast(error.message || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
 
+      <Image
+        source={require('../../assets/images/OweZone_logo.png')}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+
       <TextInput
         placeholder="Email"
+        placeholderTextColor="#94a3b8"
         value={form.email}
         onChangeText={(text) => handleChange('email', text)}
         keyboardType="email-address"
         autoCapitalize="none"
         style={styles.input}
+        editable={!loading}
       />
 
       <TextInput
         placeholder="Password"
+        placeholderTextColor="#94a3b8"
         value={form.password}
         onChangeText={(text) => handleChange('password', text)}
         secureTextEntry={!showPassword}
         style={styles.input}
+        editable={!loading}
       />
 
       <TouchableOpacity
         onPress={() => setShowPassword(!showPassword)}
         style={styles.showPasswordBtn}
+        disabled={loading}
       >
         <Text style={styles.showPasswordText}>
           {showPassword ? 'Hide Password' : 'Show Password'}
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
-        <Text style={styles.loginText}>Login</Text>
+      <TouchableOpacity
+        style={[styles.loginBtn, loading && { opacity: 0.6 }]}
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#0B1D51" />
+        ) : (
+          <Text style={styles.loginText}>Login</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('Register')}>
@@ -90,21 +119,37 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: '#fff',
-    justifyContent: 'center',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 24,
+    backgroundColor: '#8CCDEB',
+    paddingHorizontal: 30,
+    marginHorizontal: -24,
+    marginTop: -40,
+    paddingTop: 80,
+    paddingBottom: 40,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    color: '#0B1D51',
+  },
+  logo: {
+    width: 180,
+    height: 180,
+    alignSelf: 'center',
+    marginBottom: 32,
   },
   input: {
     height: 50,
     borderColor: '#ccc',
+    color: '#999',
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
     marginBottom: 16,
+    backgroundColor: '#f9fafc',
   },
   showPasswordBtn: {
     marginBottom: 20,
@@ -115,14 +160,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   loginBtn: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#FFE3A9',
     padding: 14,
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 12,
   },
   loginText: {
-    color: '#fff',
+    color: '#0B1D51',
     fontWeight: 'bold',
   },
   registerRedirect: {

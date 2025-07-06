@@ -35,17 +35,17 @@ export const loginUser = async (email, password) => {
 };
 
 
-export const createRoom = async (roomName) => {
+export const createRoom = async ({ name, description, themeColor, size }) => {
   try {
     const token = await AsyncStorage.getItem('token');
-    const userId = await AsyncStorage.getItem('userId'); // Make sure this is saved during login
 
     const response = await axios.post(
       `${BASE_URL}/api/rooms/create`,
       {
-        name: roomName,
-        admin: userId,
-        members: [userId],
+        name,
+        description,
+        themeColor,
+        size,
       },
       {
         headers: {
@@ -56,9 +56,12 @@ export const createRoom = async (roomName) => {
 
     return response.data;
   } catch (error) {
-    throw error.response?.data?.message || 'Room creation failed';
+    console.log('🚨 Create Room Error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Room creation failed');
   }
 };
+
+
 
 
 export const joinRoom = async (roomCode) => {
@@ -196,3 +199,83 @@ export const getMySettlementRequests = async () => {
   });
   return res.data.requests;
 };
+
+export const deleteRoomById = async (roomId) => {
+  const token = await AsyncStorage.getItem('token');
+  const response = await axios.delete(`${BASE_URL}/api/rooms/${roomId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const getMyNotifications = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const res = await axios.get(`${BASE_URL}/api/notifications/my`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.notifications;
+  } catch (err) {
+    console.log('Notification Fetch Error:', err.response?.data || err.message);
+    throw new Error(err.response?.data?.message || 'Failed to fetch notifications');
+  }
+};
+
+// delete expenses  ------------------------------------------------
+export const deleteExpense = async (expenseId) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const res = await axios.delete(`${BASE_URL}/api/expenses/${expenseId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log("Delete Expense Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to delete expense');
+  }
+};
+
+
+export const getRoomMessages = async (roomId) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const res = await axios.get(`${BASE_URL}/api/chat/${roomId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log('❌ Get Messages Error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to fetch messages');
+  }
+};
+
+
+
+export const sendMessage = async ({ roomId, senderId, senderName, text }) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const res = await axios.post(
+      `${BASE_URL}/api/chat`,
+      { roomId, senderId, senderName, text },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log('❌ Send Message Error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to send message');
+  }
+};
+
+

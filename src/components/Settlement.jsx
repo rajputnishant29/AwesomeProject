@@ -108,6 +108,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#1e3a8a',
     textAlign: 'center',
+     backgroundColor: '#8CCDEB', // light pink, or use any hex code you like
+  paddingHorizontal: 30,
+  marginHorizontal: -24,
+  marginTop: -40,
+  paddingTop: 50,
+  paddingBottom: 20,
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
   },
   info: {
     fontSize: 18,
@@ -115,7 +123,7 @@ const styles = StyleSheet.create({
     color: '#777',
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFE3A9',
     padding: 20,
     borderRadius: 12,
     elevation: 4,

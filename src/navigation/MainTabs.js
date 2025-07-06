@@ -49,7 +49,7 @@ const AnimatedIcon = ({ name, focused }) => {
       <MaterialCommunityIcons
         name={name}
         size={30}
-        color={focused ? '#fff' : '#007bff'}
+        color={focused ? '#0B1D51' : '#0B1D51'}
       />
     </Animated.View>
   );
@@ -62,11 +62,11 @@ const MainTabs = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: 60,
+          height: 80,
           position: 'absolute',
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
-          backgroundColor: '#ffffff',
+          backgroundColor: '#8CCDEB',
           shadowColor: '#000',
           shadowOffset: { width: 0, height: -3 },
           shadowOpacity: 0.1,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeIconWrapper: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#FFE3A9',
     height: 50,
     width: 50,
     borderRadius: 25,

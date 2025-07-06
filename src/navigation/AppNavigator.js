@@ -13,6 +13,12 @@ import ViewExpenses from '../components/ViewExpense';
 import MyRooms from '../components/MyRooms';
 import Settlement from '../components/Settlement';
 import PendingRequests from '../components/PendingRequests';
+import Notifications from '../screens/Notifications';
+import SplashScreen from '../components/Splash';
+import AboutUs from '../screens/About';
+import Feedback from '../screens/Feedback';
+import PrivacyPolicy from '../screens/PrivacyPolicy';
+import RoomChatScreen from '../screens/Chat';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +41,7 @@ const AppNavigator = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
           <>
+            <Stack.Screen name="Splash" component={SplashScreen} />
             <Stack.Screen name="MainTabs" component={MainTabs} />
             <Stack.Screen name="RoomDetails" component={RoomDetails} />
             <Stack.Screen name="AddExpense" component={AddExpense} />
@@ -42,9 +49,18 @@ const AppNavigator = () => {
             <Stack.Screen name="MyRooms" component={MyRooms} />
             <Stack.Screen name="Settlement" component={Settlement} />
             <Stack.Screen name="PendingRequests" component={PendingRequests} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Notifications" component={Notifications} />
+            <Stack.Screen name="AboutUs" component={AboutUs} />
+            <Stack.Screen name="Feedback" component={Feedback} />
+            <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="RoomChat" component={RoomChatScreen} />
+
           </>
         ) : (
-          <>
+          <>  
+            <Stack.Screen name="Splash" component={SplashScreen} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="MainTabs" component={MainTabs} />
@@ -54,6 +70,13 @@ const AppNavigator = () => {
             <Stack.Screen name="MyRooms" component={MyRooms} />
             <Stack.Screen name="Settlement" component={Settlement} />
             <Stack.Screen name="PendingRequests" component={PendingRequests} />
+            <Stack.Screen name="Notifications" component={Notifications} />
+            <Stack.Screen name="AboutUs" component={AboutUs} />
+            <Stack.Screen name="Feedback" component={Feedback} />
+            <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+            <Stack.Screen name="RoomChat" component={RoomChatScreen} />
+
+
           </>
         )}
       </Stack.Navigator>

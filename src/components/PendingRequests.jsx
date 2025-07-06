@@ -71,13 +71,21 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#713f12',
+    color: '#0B1D51',
     textAlign: 'center',
+     backgroundColor: '#8CCDEB', // light pink, or use any hex code you like
+  paddingHorizontal: 30,
+  marginHorizontal: -24,
+  marginTop: -40,
+  paddingTop: 50,
+  paddingBottom: 20,
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
   },
   info: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#777',
+    color: '#111',
   },
   card: {
     backgroundColor: '#fff',
